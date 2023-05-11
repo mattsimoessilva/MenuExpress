@@ -5,6 +5,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.TextField()
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    image_path = models.CharField(max_length=255, default='path/to/default/image.jpg')
     # Outros campos do produto
 
     def __str__(self):
