@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.menu_express">
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="menu_express"
         android:name="${applicationName}"
