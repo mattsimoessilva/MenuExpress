@@ -10,7 +10,7 @@ class ProductDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red.shade900,
-        title: Text('Product Details'),
+        title: const Text('Product Details'),
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -23,37 +23,37 @@ class ProductDetailsPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   product['name'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   '\$${product['price']}',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   'Description:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Text(
                   product['description'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                   ),
                 ),
@@ -61,7 +61,7 @@ class ProductDetailsPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () {
                 // Lógica para adicionar o produto ao carrinho
@@ -71,7 +71,7 @@ class ProductDetailsPage extends StatelessWidget {
                   Colors.red.shade900,
                 ),
               ),
-              child: Text(
+              child: const Text(
                 'Add to Cart',
                 style: TextStyle(
                   color: Colors.white,

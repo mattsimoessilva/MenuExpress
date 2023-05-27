@@ -4,7 +4,7 @@ import 'package:menu_express/checkout_page.dart';
 class CartPage extends StatelessWidget {
   final List<dynamic> cartItems;
 
-  const CartPage({required this.cartItems});
+  const CartPage({super.key, required this.cartItems});
 
   double calculateTotalPrice() {
     double totalPrice = 0;
@@ -18,7 +18,7 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart'),
+        title: const Text('Cart'),
         backgroundColor: Colors.red.shade900,
         elevation: 0,
       ),
@@ -34,13 +34,13 @@ class CartPage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Padding(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 'Total: \$${calculateTotalPrice().toStringAsFixed(2)}',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -52,14 +52,14 @@ class CartPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => CheckoutPage(total: calculateTotalPrice(), cartItems: cartItems)),
                   );
                 },
-                child: Text(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.shade900, // Definir a cor de fundo como vermelho
+                ),
+                child: const Text(
                   'Checkout',
                   style: TextStyle(
                     color: Colors.white, // Definir a cor do texto como branco
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red.shade900, // Definir a cor de fundo como vermelho
                 ),
               ),
             ],

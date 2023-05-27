@@ -3,10 +3,12 @@ import 'package:menu_express/menu_page.dart';
 import 'package:menu_express/login_page.dart'; // Importe a página de login
 
 void main() {
-  runApp(MenuExpressApp());
+  runApp(const MenuExpressApp());
 }
 
 class MenuExpressApp extends StatelessWidget {
+  const MenuExpressApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,8 +19,8 @@ class MenuExpressApp extends StatelessWidget {
       ),
       initialRoute: '/', // Defina a rota inicial como '/'
       routes: {
-        '/': (context) => HomePage(), // Defina a rota para a página inicial
-        '/menu': (context) => MenuPage(),
+        '/': (context) => const HomePage(), // Defina a rota para a página inicial
+        '/menu': (context) => const MenuPage(),
         '/login': (context) => LoginPage(), // Adicione a rota para a página de login
       },
     );
@@ -26,12 +28,14 @@ class MenuExpressApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true, // Estende o conteúdo atrás da AppBar
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'MenuExpress',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -41,20 +45,20 @@ class HomePage extends StatelessWidget {
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('assets/images/background_image.jpg'),
             fit: BoxFit.cover,
           ),
         ),
         child: Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           color: Colors.black.withOpacity(0.4),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
+              const Text(
                 'Bem-vindo ao MenuExpress',
                 style: TextStyle(
                   fontSize: 24,
@@ -63,21 +67,21 @@ class HomePage extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/login'); // Redirecione para a página de login
                 },
-                child: Text(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.shade900, // Define um tom de vermelho escuro
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                ),
+                child: const Text(
                   'Entrar',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                   ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red.shade900, // Define um tom de vermelho escuro
-                  padding: EdgeInsets.symmetric(vertical: 16),
                 ),
               ),
             ],
