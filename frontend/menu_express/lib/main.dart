@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menu_express/menu_page.dart';
+import 'package:menu_express/login_page.dart'; // Importe a página de login
 
 void main() {
   runApp(MenuExpressApp());
@@ -14,9 +15,11 @@ class MenuExpressApp extends StatelessWidget {
         primarySwatch: Colors.red,
         fontFamily: 'Montserrat',
       ),
-      home: HomePage(),
+      initialRoute: '/', // Defina a rota inicial como '/'
       routes: {
+        '/': (context) => HomePage(), // Defina a rota para a página inicial
         '/menu': (context) => MenuPage(),
+        '/login': (context) => LoginPage(), // Adicione a rota para a página de login
       },
     );
   }
@@ -63,10 +66,10 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/menu');
+                  Navigator.pushNamed(context, '/login'); // Redirecione para a página de login
                 },
                 child: Text(
-                  'Explorar',
+                  'Entrar',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.white,

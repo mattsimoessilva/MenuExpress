@@ -49,7 +49,7 @@ class CartPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CheckoutPage(total: calculateTotalPrice())),
+                    MaterialPageRoute(builder: (context) => CheckoutPage(total: calculateTotalPrice(), cartItems: cartItems)),
                   );
                 },
                 child: Text(

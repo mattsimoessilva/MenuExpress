@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'product_details_page.dart';
 import 'cart_page.dart';
 import 'checkout_page.dart';
+import 'order_tracking_page.dart';
 
 class MenuPage extends StatefulWidget {
   @override
@@ -46,6 +47,13 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    final aspectRatio = screenWidth / screenHeight;
+
+    final crossAxisCount = aspectRatio > 1.41 ? 4 : 3;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red.shade900,
@@ -54,11 +62,11 @@ class _MenuPageState extends State<MenuPage> {
       backgroundColor: Colors.white,
       body: GridView.builder(
         padding: EdgeInsets.all(16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.75,
-          crossAxisSpacing: 16,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 300,
           mainAxisSpacing: 16,
+          crossAxisSpacing: 16,
+          childAspectRatio: 0.75,
         ),
         itemCount: products.length,
         itemBuilder: (context, index) {
@@ -72,71 +80,60 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               );
             },
-            child: Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 6,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(12),
-                            topRight: Radius.circular(12),
-                          ),
-                          child: Image.network(
-                            product['image_path'],
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
                       ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
+                      child: Image.network(
+                        product['image_path'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
                           product['name'],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                            fontSize: 16,
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
+                        SizedBox(height: 8),
+                        Text(
                           '\$${product['price']}',
                           style: TextStyle(
                             color: Colors.grey,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  bottom: 8,
-                  right: 8,
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      shape: BoxShape                      .circle,
-                      color: Colors.red.shade900,
+                      ],
                     ),
-                    child: IconButton(
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: ElevatedButton(
                       onPressed: () {
                         addToCart(product);
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -146,17 +143,47 @@ class _MenuPageState extends State<MenuPage> {
                           ),
                         );
                       },
-                      icon: Icon(
-                        Icons.add_shopping_cart,
-                        color: Colors.white,
-                        size: 18,
+                      child: Text(
+                        'Adicionar ao Carrinho',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red.shade900,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.red.shade900,
+        selectedItemColor: Colors.white,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'Menu',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.track_changes),
+            label: 'Order Tracking',
+          ),
+        ],
+        onTap: (index) {
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OrderTrackingPage()),
+            );
+          }
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
@@ -175,5 +202,4 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 }
-
 

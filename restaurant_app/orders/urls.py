@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ProductListCreateView, ProductRetrieveUpdateDestroyView, OrderListCreateView, OrderRetrieveUpdateDestroyView, CustomerListCreateView, CustomerRetrieveUpdateDestroyView, CategoryListCreateView, CategoryRetrieveUpdateDestroyView
+from .views import ProductListCreateView, ProductRetrieveUpdateDestroyView, OrderListCreateView, OrderRetrieveUpdateDestroyView, CustomerListCreateView, CustomerRetrieveUpdateDestroyView, CategoryListCreateView, CategoryRetrieveUpdateDestroyView, LoginView
 
 app_name = 'orders'
 
@@ -12,4 +12,5 @@ urlpatterns = [
     path('customers/<int:pk>/', CustomerRetrieveUpdateDestroyView.as_view(), name='customer-detail'),
     path('categories/', CategoryListCreateView.as_view(), name='category-list'),
     path('categories/<int:pk>/', CategoryRetrieveUpdateDestroyView.as_view(), name='category-detail'),
+    path('login/', LoginView.as_view(), name='login'),  # Adicione essa linha para a rota de login
 ]

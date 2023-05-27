@@ -1,6 +1,9 @@
-from rest_framework import generics
-from .models import Product, Order, Customer, Category
+from rest_framework import generics, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth import authenticate, login
 from .serializers import ProductSerializer, OrderSerializer, CustomerSerializer, CategorySerializer
+from .models import Product, Order, Customer, Category
 
 class ProductListCreateView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -33,4 +36,19 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 class CategoryRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        # Autenticar o usuário
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            # Efetuar o login
+            login(request, user)
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 

@@ -1,4 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Outros campos do cliente
+
+    def __str__(self):
+        return self.user.username
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
@@ -19,7 +27,7 @@ class Category(models.Model):
         return self.name
 
 class Order(models.Model):
-    customer = models.ForeignKey('Customer', on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=(
         ('PENDING', 'Pending'),
@@ -29,7 +37,7 @@ class Order(models.Model):
     # Outros campos do pedido
 
     def __str__(self):
-        return f"Order #{self.id} - {self.customer.name}"
+        return f"Order #{self.id} - {self.customer.user.username}"
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -38,13 +46,3 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - Quantity: {self.quantity}"
-
-class Customer(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    # Outros campos do cliente
-
-    def __str__(self):
-        return self.name
-
-
