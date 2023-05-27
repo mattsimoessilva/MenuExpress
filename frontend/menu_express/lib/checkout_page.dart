@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'menu_page.dart';
+
 
 class CheckoutPage extends StatelessWidget {
   final double total;
@@ -46,8 +48,12 @@ class CheckoutPage extends StatelessWidget {
                 // Exemplo: chamar uma função que limpa o carrinho
                 _limparCarrinho();
 
-                // Redirecionar para a página de menu
-                Navigator.pushReplacementNamed(context, '/menu');
+                // Após o pagamento ser confirmado
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => MenuPage()),
+                  (route) => false, // Remove todas as rotas anteriores da pilha
+                );
               },
               child: const Text('Confirmar pagamento'),
             ),

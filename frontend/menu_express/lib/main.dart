@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:menu_express/menu_page.dart';
 import 'package:menu_express/login_page.dart'; // Importe a página de login
+import 'package:menu_express/order_tracking_page.dart';
 
 void main() {
   runApp(const MenuExpressApp());
@@ -20,8 +21,9 @@ class MenuExpressApp extends StatelessWidget {
       initialRoute: '/', // Defina a rota inicial como '/'
       routes: {
         '/': (context) => const HomePage(), // Defina a rota para a página inicial
-        '/menu': (context) => const MenuPage(),
+        '/menu': (context) => MenuPage(),
         '/login': (context) => LoginPage(), // Adicione a rota para a página de login
+        '/order_tracking': (context) => OrderTrackingPage(),
       },
     );
   }

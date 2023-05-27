@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'bottom_navigation_bar.dart';
+import 'order_tracking_page.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final dynamic product;
@@ -80,6 +82,18 @@ class ProductDetailsPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0, // Defina o índice atual com base na página atual
+        onTap: (index) {
+          // Lógica para lidar com o clique na barra inferior
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OrderTrackingPage()),
+            );
+          }
+        },
       ),
     );
   }

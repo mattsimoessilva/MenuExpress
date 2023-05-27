@@ -13,4 +13,5 @@ urlpatterns = [
     path('categories/', CategoryListCreateView.as_view(), name='category-list'),
     path('categories/<int:pk>/', CategoryRetrieveUpdateDestroyView.as_view(), name='category-detail'),
     path('login/', LoginView.as_view(), name='login'),  # Adicione essa linha para a rota de login
+
 ]

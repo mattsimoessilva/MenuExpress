@@ -4,12 +4,11 @@ import 'dart:convert';
 
 import 'product_details_page.dart';
 import 'cart_page.dart';
+import 'checkout_page.dart';
 import 'order_tracking_page.dart';
 import 'bottom_navigation_bar.dart';
 
 class MenuPage extends StatefulWidget {
-  const MenuPage({super.key});
-
   @override
   _MenuPageState createState() => _MenuPageState();
 }
@@ -17,7 +16,6 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   List<dynamic> products = [];
   List<dynamic> cartItems = [];
-  int _currentIndex = 0;
 
   Future<void> fetchProducts() async {
     final response = await http.get(Uri.parse('http://10.0.2.2:8000/products/'));
@@ -60,16 +58,17 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red.shade900,
-        title: const Text('Menu'),
+        title: Text('Menu'),
+        automaticallyImplyLeading: false, // Oculta a seta de navegação
       ),
       backgroundColor: Colors.white,
       body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        padding: EdgeInsets.all(16),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 300,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,
-          childAspectRatio: 0.75,
+          childAspectRatio: 0.60,
         ),
         itemCount: products.length,
         itemBuilder: (context, index) {
@@ -84,22 +83,94 @@ class _MenuPageState extends State<MenuPage> {
               );
             },
             child: Container(
-              // Restante do código
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      child: Image.network(
+                        product['image_path'],
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          product['name'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          '\$${product['price']}',
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        addToCart(product);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Item added to cart'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Adicionar ao Carrinho',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.red.shade900,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
       ),
       bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: _currentIndex,
+        currentIndex: 0,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
           if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const OrderTrackingPage()),
-            );
+            Navigator.pushReplacementNamed(context, '/order_tracking');
           }
         },
       ),
@@ -110,10 +181,15 @@ class _MenuPageState extends State<MenuPage> {
             MaterialPageRoute(
               builder: (context) => CartPage(cartItems: cartItems),
             ),
-          );
+          ).then((value) {
+            setState(() {
+              // Atualizar a lista de itens do carrinho após retornar da página do carrinho
+              cartItems = value;
+            });
+          });
         },
         backgroundColor: Colors.red.shade900,
-        icon: const Icon(Icons.shopping_cart),
+        icon: Icon(Icons.shopping_cart),
         label: Text('Cart (${cartItems.length})'),
       ),
     );
