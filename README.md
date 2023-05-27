@@ -14,8 +14,8 @@ The Mobile Order Automation System is a Flutter and Django-based solution design
 ## Installation
 
 1. Clone the repository.
-2. Set up the Django back-end by following the instructions in the `backend/README.md` file.
-3. Set up the Flutter front-end by following the instructions in the `frontend/README.md` file.
+2. Set up the Django back-end.
+3. Set up the Flutter front-end.
 
 ## Usage
 
@@ -29,7 +29,7 @@ Contributions to the Mobile Order Automation System are welcome! If you find any
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This project is licensed under the MIT License.
 
 ---
 
