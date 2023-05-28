@@ -37,12 +37,15 @@ class CheckoutPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Image.asset(
-              'assets/images/qr_code.jpg', // substitua pelo caminho para o seu QR code
+              'assets/images/qr_code.jpeg', // substitua pelo caminho para o seu QR code
               width: 200,
               height: 200,
             ),
             const SizedBox(height: 16),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red.shade900,
+              ),
               onPressed: () {
                 // Coloque aqui a lógica para limpar o carrinho
                 // Exemplo: chamar uma função que limpa o carrinho
