@@ -77,11 +77,17 @@ class _CartPageState extends State<CartPage> {
                     onPressed: isCartEmpty ? null : () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => CheckoutPage(total: calculateTotalPrice(), cartItems: widget.cartItems)),
+                        MaterialPageRoute(
+                          builder: (context) => CheckoutPage(
+                            total: calculateTotalPrice(),
+                            cartItems: widget.cartItems,
+                          ),
+                        ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isCartEmpty ? Colors.grey : Colors.red.shade900,
+                      backgroundColor:
+                          isCartEmpty ? Colors.grey : Colors.red.shade900,
                     ),
                     child: const Text(
                       'Checkout',
@@ -94,7 +100,8 @@ class _CartPageState extends State<CartPage> {
                   ElevatedButton(
                     onPressed: hasItemsInCart ? clearCart : null,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: isCartEmpty ? Colors.grey : Colors.red.shade900,
+                      backgroundColor:
+                          isCartEmpty ? Colors.grey : Colors.red.shade900,
                     ),
                     child: const Text(
                       'Clear Cart',
@@ -112,4 +119,3 @@ class _CartPageState extends State<CartPage> {
     );
   }
 }
-

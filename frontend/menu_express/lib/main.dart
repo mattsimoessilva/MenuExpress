@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:menu_express/menu_page.dart';
-import 'package:menu_express/login_page.dart'; // Importe a página de login
+import 'package:menu_express/login_page.dart';
 import 'package:menu_express/order_tracking_page.dart';
+import 'package:provider/provider.dart';
+import 'cookie_service.dart';
 
 void main() {
-  runApp(const MenuExpressApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider(create: (_) => CookieService()),
+      ],
+      child: MenuExpressApp(),
+    ),
+  );
 }
 
 class MenuExpressApp extends StatelessWidget {
-  const MenuExpressApp({super.key});
+  const MenuExpressApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +27,11 @@ class MenuExpressApp extends StatelessWidget {
         primarySwatch: Colors.red,
         fontFamily: 'Montserrat',
       ),
-      initialRoute: '/', // Defina a rota inicial como '/'
+      initialRoute: '/',
       routes: {
-        '/': (context) => const HomePage(), // Defina a rota para a página inicial
+        '/': (context) => const HomePage(),
         '/menu': (context) => MenuPage(),
-        '/login': (context) => LoginPage(), // Adicione a rota para a página de login
+        '/login': (context) => LoginPage(),
         '/order_tracking': (context) => OrderTrackingPage(),
       },
     );
@@ -30,12 +39,12 @@ class MenuExpressApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true, // Estende o conteúdo atrás da AppBar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: const Text(
           'MenuExpress',
@@ -43,7 +52,7 @@ class HomePage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.transparent, // Define a cor de fundo como transparente
+        backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: Container(
@@ -72,10 +81,10 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/login'); // Redirecione para a página de login
+                  Navigator.pushNamed(context, '/login');
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.shade900, // Define um tom de vermelho escuro
+                  backgroundColor: Colors.red.shade900,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 child: const Text(
