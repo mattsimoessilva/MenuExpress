@@ -14,21 +14,19 @@ class _CartPageState extends State<CartPage> {
   double calculateTotalPrice() {
     double totalPrice = 0;
     for (var item in widget.cartItems) {
-      totalPrice += double.parse(item['price'].toString());
+      final product = item['product'];
+      totalPrice += double.parse(product['price'].toString());
     }
     return totalPrice;
-  }
-
-  void removeItem(int index) {
-    setState(() {
-      widget.cartItems.removeAt(index);
-    });
   }
 
   void clearCart() {
     setState(() {
       widget.cartItems.clear();
     });
+
+    final updatedCartItems = <dynamic>[];
+    Navigator.pop(context, updatedCartItems); // Retorna a lista vazia ao limpar o carrinho
   }
 
   @override
@@ -38,23 +36,17 @@ class _CartPageState extends State<CartPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cart'),
+        title: const Text('Carrinho'),
         backgroundColor: Colors.red.shade900,
         elevation: 0,
       ),
       body: ListView.builder(
         itemCount: widget.cartItems.length,
         itemBuilder: (context, index) {
-          final item = widget.cartItems[index];
+          final item = widget.cartItems[index]['product'];
           return ListTile(
             title: Text(item['name']),
             subtitle: Text('\$${item['price']}'),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                removeItem(index);
-              },
-            ),
           );
         },
       ),
@@ -80,7 +72,12 @@ class _CartPageState extends State<CartPage> {
                         MaterialPageRoute(
                           builder: (context) => CheckoutPage(
                             total: calculateTotalPrice(),
-                            cartItems: widget.cartItems,
+                            cartItems: widget.cartItems.map((item) {
+                              return {
+                                'product': item['product'],
+                                'quantity': widget.cartItems.length,
+                              };
+                            }).toList(),
                           ),
                         ),
                       );
@@ -104,7 +101,7 @@ class _CartPageState extends State<CartPage> {
                           isCartEmpty ? Colors.grey : Colors.red.shade900,
                     ),
                     child: const Text(
-                      'Clear Cart',
+                      'Limpar Carrinho',
                       style: TextStyle(
                         color: Colors.white,
                       ),

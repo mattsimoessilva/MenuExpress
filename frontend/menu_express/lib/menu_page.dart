@@ -28,14 +28,19 @@ class _MenuPageState extends State<MenuPage> {
 
   void addToCart(dynamic product) {
     setState(() {
-      cartItems.add(product);
+      final item = {
+        'id': product['id'], // Adicione o ID do produto
+        'product': product, // Adicione o produto
+      };
+      cartItems.add(item);
     });
   }
 
   double calculateTotalPrice() {
     double totalPrice = 0;
     for (var item in cartItems) {
-      totalPrice += double.parse(item['price']);
+      final product = item['product'];
+      totalPrice += double.parse(product['price'].toString());
     }
     return totalPrice;
   }
@@ -58,7 +63,7 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red.shade900,
-        title: Text('Menu'),
+        title: Text('Cardápio'),
         automaticallyImplyLeading: false, // Oculta a seta de navegação
       ),
       backgroundColor: Colors.white,
@@ -140,7 +145,7 @@ class _MenuPageState extends State<MenuPage> {
                         addToCart(product);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Item added to cart'),
+                            content: Text('Item adicionado ao carrinho'),
                             duration: Duration(seconds: 2),
                           ),
                         );
@@ -175,22 +180,22 @@ class _MenuPageState extends State<MenuPage> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final updatedCartItems = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => CartPage(cartItems: cartItems),
             ),
-          ).then((value) {
+          );
+          if (updatedCartItems != null) {
             setState(() {
-              // Atualizar a lista de itens do carrinho após retornar da página do carrinho
-              cartItems = value;
+              cartItems = updatedCartItems;
             });
-          });
+          }
         },
         backgroundColor: Colors.red.shade900,
         icon: Icon(Icons.shopping_cart),
-        label: Text('Cart (${cartItems.length})'),
+        label: Text('Carrinho (${cartItems.length})'),
       ),
     );
   }

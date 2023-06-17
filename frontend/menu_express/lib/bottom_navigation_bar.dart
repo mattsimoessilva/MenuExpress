@@ -20,11 +20,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.menu),
-          label: 'Menu',
+          label: 'Cardápio',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.track_changes),
-          label: 'Order Tracking',
+          label: 'Pedidos',
         ),
       ],
       onTap: onTap,

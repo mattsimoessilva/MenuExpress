@@ -34,11 +34,11 @@ class CheckoutPage extends StatelessWidget {
     print('Session ID: $sessionId');
 
     final url = Uri.parse('http://10.0.2.2:8000/current_customer_id/');
-    
+
     final options = Options(
       headers: {'Cookie': 'sessionid=$sessionId'}, // Inserir o sessionId no header "Cookie"
     );
-    
+
     final response = await dio.get(
       url.toString(),
       options: options,
@@ -47,18 +47,17 @@ class CheckoutPage extends StatelessWidget {
     print('Request headers: ${response.requestOptions.headers}');
     print('Request URL: ${response.requestOptions.uri}');
 
-    final data = response.data;
+    final responseData = jsonEncode(response.data);
+    final data = json.decode(responseData);
     return data['customer_id'];
   }
 
-  Future<void> registerOrder(BuildContext context) async {
-    final customerId = await getCustomerId(context);
+  Future<int> createOrder(BuildContext context, int customerId) async {
     final url = Uri.parse('http://10.0.2.2:8000/orders/');
 
     final orderData = {
       'customer': customerId,
-      'status': 'PENDING', // Defina o status inicial como "PENDING"
-      // Outros campos do pedido, se houver
+      'status': 'PENDING',
     };
 
     try {
@@ -71,19 +70,63 @@ class CheckoutPage extends StatelessWidget {
       );
 
       if (response.statusCode == 201) {
-        // Pedido registrado com sucesso
-        final responseData = json.decode(response.data);
-        final orderId = responseData['id'];
-        print('Pedido registrado com sucesso. ID do pedido: $orderId');
+        final responseData = jsonEncode(response.data);
+        final orderId = int.parse(json.decode(responseData)['id'].toString());
+        print('Pedido criado com sucesso. ID do pedido: $orderId');
+        return orderId;
       } else {
-        // Houve um erro ao registrar o pedido
-        print('Erro ao registrar o pedido. Código de status: ${response.statusCode}');
+        print('Erro ao criar o pedido. Código de status: ${response.statusCode}');
       }
     } catch (e) {
-      // Houve um erro ao enviar a solicitação
       print('Erro ao enviar a solicitação: $e');
     }
-}
+
+    return -1;
+  }
+
+  Future<void> createOrderItems(int? orderId) async {
+    if (orderId != null) {
+      final url = Uri.parse('http://10.0.2.2:8000/orderitems/');
+
+      for (var item in cartItems) {
+        final orderItemData = {
+          'order': orderId,
+          'product': item['product']['id'],
+          'quantity': cartItems.length,
+        };
+
+        print(orderItemData);
+
+        try {
+          await dio.post(
+            url.toString(),
+            data: json.encode(orderItemData),
+            options: Options(
+              headers: {'Content-Type': 'application/json'},
+            ),
+          );
+        } catch (e) {
+          print('Erro ao criar o item de pedido: $e');
+        }
+      }
+    }
+  }
+
+  Future<void> registerOrder(BuildContext context) async {
+    final customerId = await getCustomerId(context);
+    final orderId = await createOrder(context, customerId);
+
+    if (orderId != -1) {
+      await createOrderItems(orderId);
+
+      cartItems.clear();
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => MenuPage()),
+        (route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +149,7 @@ class CheckoutPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Scan QR Code',
+              'Escaneie o QR Code',
               style: TextStyle(
                 fontSize: 18,
               ),
@@ -124,12 +167,6 @@ class CheckoutPage extends StatelessWidget {
               ),
               onPressed: () async {
                 await registerOrder(context);
-                cartItems.clear(); // Limpa o carrinho
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => MenuPage()),
-                  (route) => false,
-                );
               },
               child: const Text('Confirmar pagamento'),
             ),

@@ -12,7 +12,7 @@ class ProductDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red.shade900,
-        title: const Text('Product Details'),
+        title: const Text('Produto'),
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -46,7 +46,7 @@ class ProductDetailsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  'Description:',
+                  'Descrição:',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -62,39 +62,10 @@ class ProductDetailsPage extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () {
-                // Lógica para adicionar o produto ao carrinho
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                  Colors.red.shade900,
-                ),
-              ),
-              child: const Text(
-                'Add to Cart',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: 0, // Defina o índice atual com base na página atual
-        onTap: (index) {
-          // Lógica para lidar com o clique na barra inferior
-          if (index == 1) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => OrderTrackingPage()),
-            );
-          }
-        },
-      ),
+      bottomNavigationBar:
+          CustomBottomNavigationBar(currentIndex: 0, onTap: (index) {}),
     );
   }
 }
