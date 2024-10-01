@@ -1,6 +1,6 @@
-# Mobile Order Automation System
+# MenuExpress
 
-The Mobile Order Automation System is a Flutter and Django-based solution designed to streamline the order management process for restaurants. It provides a user-friendly mobile application for customers to place orders and an administrative dashboard for restaurant staff to manage and fulfill those orders.
+MenuExpress is a Flutter and Django-based solution designed to streamline the order management process for restaurants. It provides a user-friendly mobile application for customers to place orders and an administrative dashboard for restaurant staff to manage and fulfill those orders.
 
 ## Features
 
@@ -25,7 +25,7 @@ The Mobile Order Automation System is a Flutter and Django-based solution design
 
 ## Contributing
 
-Contributions to the Mobile Order Automation System are welcome! If you find any issues or have feature suggestions, please feel free to submit pull requests or open issues on the repository.
+Contributions to MenuExpress are welcome! If you find any issues or have feature suggestions, please feel free to submit pull requests or open issues on the repository.
 
 ## License
 
